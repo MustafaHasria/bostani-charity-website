@@ -1,0 +1,125 @@
+/* ==================== CSS Variables for Light Theme ==================== */
+:root[data-theme='light'] {
+  /* Primary Brand Colors */
+  --color-primary: #1F4C35;
+  --color-secondary: #49B27C;
+  --color-tertiary: #96D2B5;
+
+  /* Background & Surface */
+  --color-background: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-scaffold-background: #FFFFFF;
+
+  /* Text Colors */
+  --color-text-primary: #000000;
+  --color-text-secondary: #757575;
+  --color-text-on-primary: #FFFFFF;
+
+  /* UI Element Colors */
+  --color-border: #E0E0E0;
+  --color-divider: #D9D9D9;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Catalog Colors */
+  --color-catalog-background: #F6F6F6;
+  --color-catalog-text: #3B3B3B;
+  --color-catalog-card-background: #F9FAFB;
+  --color-catalog-card-shadow: rgba(142, 142, 142, 0.2);
+  --color-catalog-card-text-primary: #111111;
+  --color-catalog-card-text-secondary: rgba(17, 17, 17, 0.6);
+  --color-catalog-divider: rgba(0, 0, 0, 0.16);
+  --color-catalog-tab-inactive: #838589;
+
+  /* Campaign Colors */
+  --color-campaign-card-background: #F7F7F7;
+  --color-campaign-title: #292D32;
+  --color-progress-bar-unfilled: #E0E0E0;
+  --color-tab-inactive: #9E9E9E;
+
+  /* Bottom Sheet Colors */
+  --color-bottom-sheet-background: #F7F7F7;
+  --color-bottom-sheet-divider: #C0C0C0;
+  --color-dropdown-background: #F2F2F2;
+  --color-chip-border-inactive: #D9D9D9;
+  --color-field-divider: #E4E4E4;
+  --color-hint-text: #D0D0D0;
+
+  /* Effects */
+  --color-glass-effect: rgba(113, 113, 113, 0.3);
+  --color-inactive-indicator: #D9D9D9;
+}
+
+/* ==================== CSS Variables for Dark Theme ==================== */
+:root[data-theme='dark'] {
+  /* Primary Brand Colors */
+  --color-primary: #49B27C;
+  --color-secondary: #96D2B5;
+  --color-tertiary: #1F4C35;
+
+  /* Background & Surface */
+  --color-background: #111C29;
+  --color-surface: #273142;
+  --color-scaffold-background: #19273E;
+
+  /* Text Colors */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B0B0B0;
+  --color-text-on-primary: #000000;
+
+  /* UI Element Colors */
+  --color-border: #404040;
+  --color-divider: #404040;
+  --color-shadow: rgba(255, 255, 255, 0.1);
+
+  /* Catalog Colors */
+  --color-catalog-background: #273142;
+  --color-catalog-text: #E0E0E0;
+  --color-catalog-card-background: #2F3A4D;
+  --color-catalog-card-shadow: rgba(0, 0, 0, 0.2);
+  --color-catalog-card-text-primary: #FFFFFF;
+  --color-catalog-card-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-catalog-divider: rgba(255, 255, 255, 0.16);
+  --color-catalog-tab-inactive: #9E9E9E;
+
+  /* Campaign Colors */
+  --color-campaign-card-background: #273142;
+  --color-campaign-title: #FFFFFF;
+  --color-progress-bar-unfilled: #404040;
+  --color-tab-inactive: #9E9E9E;
+
+  /* Bottom Sheet Colors */
+  --color-bottom-sheet-background: #273142;
+  --color-bottom-sheet-divider: #404040;
+  --color-dropdown-background: #2F3A4D;
+  --color-chip-border-inactive: #404040;
+  --color-field-divider: #404040;
+  --color-hint-text: #707070;
+
+  /* Effects */
+  --color-glass-effect: rgba(255, 255, 255, 0.3);
+  --color-inactive-indicator: #404040;
+}
+
+/* Default to light theme if no theme is set */
+:root {
+  /* Primary Brand Colors */
+  --color-primary: #1F4C35;
+  --color-secondary: #49B27C;
+  --color-tertiary: #96D2B5;
+
+  /* Background & Surface */
+  --color-background: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-scaffold-background: #FFFFFF;
+
+  /* Text Colors */
+  --color-text-primary: #000000;
+  --color-text-secondary: #757575;
+  --color-text-on-primary: #FFFFFF;
+
+  /* UI Element Colors */
+  --color-border: #E0E0E0;
+  --color-divider: #D9D9D9;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+}
+

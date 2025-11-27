@@ -1,0 +1,127 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "projects": "Bustani Projects",
+    "donations": "Donation Sections",
+    "contact": "Contact Us"
+  },
+  "donations": {
+    "education": "Education",
+    "health": "Health",
+    "food": "Food",
+    "shelter": "Shelter"
+  },
+  "language": {
+    "arabic": "العربية",
+    "english": "English"
+  },
+  "common": {
+    "logo": "Bustani Charity"
+  },
+  "hero": {
+    "title": "Bustani Foundation for Community Service",
+    "subtitle": "Where dreams grow with every donation",
+    "donateNow": "Donate Now",
+    "donationSections": "Donation Sections"
+  },
+  "about": {
+    "titleHighlight": "Bustani Foundation",
+    "titleRest": "for Community Services",
+    "description": "Bustani Foundation for Community Service plants hope in every home and child, where your donations turn into sponsorship for needy families and education and health for children, in addition to sustainable food and housing support. More than five hundred beneficiaries live a better life every month thanks to your generosity, and together we develop the community step by step."
+  },
+  "campaigns": {
+    "title": "Most Important Campaigns",
+    "viewAll": "All Campaigns",
+    "campaign1": {
+      "title": "Eid Sacrifices Campaign",
+      "description": "Join us in bringing joy to needy families",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    },
+    "campaign2": {
+      "title": "Your Provisions Have Arrived with Love Campaign",
+      "description": "Your basket today might be a family's joy tomorrow",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    },
+    "campaign3": {
+      "title": "Children's Donation Campaign",
+      "description": "Your donation creates joy in the child's heart",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    }
+  },
+  "zakat": {
+    "title": "Your Zakat Changes Lives",
+    "description": "Zakat is not just spending... rather, it is an act of worship that brings one closer to God, a purification for the soul and wealth, a bridge between the rich and the poor, a guarantee for the stability of society, and a divine promise of blessing and forgiveness.",
+    "ctaText": "Donate now with the Zakat of your wealth through Bustani Foundation for Community Service",
+    "buttonText": "Donate Now"
+  },
+  "projects": {
+    "title": "Bustani Projects",
+    "viewAll": "All Projects",
+    "project1": {
+      "title": "Bustani Medical Team",
+      "description": "Your basket today might be a family's joy tomorrow",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    },
+    "project2": {
+      "title": "Bustani Academy",
+      "description": "Join us in bringing joy to needy families",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    }
+  },
+  "orphanSponsorship": {
+    "title": "Orphan Sponsorship",
+    "viewAll": "All Projects",
+    "item1": {
+      "title": "Children's Donation Campaign",
+      "description": "Your donation creates joy in the child's heart",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    },
+    "item2": {
+      "title": "Your Provisions Have Arrived with Love Campaign",
+      "description": "Your basket today might be a family's joy tomorrow",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    },
+    "item3": {
+      "title": "Sponsor an Orphan Family",
+      "description": "Join us in bringing happiness to needy families",
+      "paid": "Paid",
+      "remaining": "Remaining",
+      "details": "Campaign Details"
+    }
+  },
+  "footer": {
+    "contact": {
+      "title": "Contact Us",
+      "location": "Syria, Aleppo",
+      "email": "Ourstudio@hello.com",
+      "phone": "+1 386-688-3295"
+    },
+    "help": {
+      "title": "Help",
+      "about": "About Bustani Foundation",
+      "faq": "Frequently Asked Questions",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy"
+    },
+    "follow": {
+      "title": "Follow Us"
+    },
+    "copyright": "Bustani Foundation for Community Service - All rights reserved 2023 - 2025"
+  }
+}
+
