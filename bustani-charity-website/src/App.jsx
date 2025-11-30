@@ -27,20 +27,45 @@ function App() {
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
+    // Disable scroll restoration to prevent browser from restoring scroll position
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Scroll to top immediately on mount with auto behavior to prevent smooth scroll delay
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'auto'
+    });
+
     // Simulate page load time
     const timer = setTimeout(() => {
       setIsFadingOut(true);
       setTimeout(() => {
         setIsLoading(false);
+        // Re-enable smooth scroll after page is loaded
+        document.documentElement.classList.add('loaded');
+        document.body.classList.add('loaded');
       }, 300); // Wait for fade out animation
     }, 1200); // Show spinner for 1.2 seconds
 
     // Also hide spinner when page is fully loaded
     const handleLoad = () => {
+      // Ensure scroll position is at top
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'auto'
+      });
+      
       setTimeout(() => {
         setIsFadingOut(true);
         setTimeout(() => {
           setIsLoading(false);
+          // Re-enable smooth scroll after page is loaded
+          document.documentElement.classList.add('loaded');
+          document.body.classList.add('loaded');
         }, 300);
       }, 300);
     };

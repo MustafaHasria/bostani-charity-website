@@ -3,6 +3,7 @@
   background-color: var(--color-background);
   padding: 4rem 0 2rem 0;
   position: relative;
+  z-index: 1;
 }
 
 .projects-container {

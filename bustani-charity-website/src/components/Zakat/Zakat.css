@@ -5,6 +5,7 @@
   position: relative;
   overflow: hidden;
   animation: fadeIn 0.8s ease-out;
+  z-index: 1;
 }
 
 .zakat-section::before {

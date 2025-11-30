@@ -4,7 +4,11 @@
   padding: 5rem 2rem;
   position: relative;
   overflow: hidden;
-  animation: fadeIn 0.8s ease-out;
+  animation: fadeIn 0.8s ease-out, slideInUp 1s ease-out;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(73, 178, 124, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(73, 178, 124, 0.03) 0%, transparent 50%);
+  z-index: 1;
 }
 
 .about-container {
@@ -44,6 +48,8 @@
 
 .title-highlight {
   color: var(--color-primary);
+  text-shadow: 0 0 20px var(--glow-primary);
+  animation: glowPulse 2s ease-in-out infinite;
 }
 
 .title-rest {
@@ -82,6 +88,13 @@
   pointer-events: none;
   user-select: none;
   font-family: 'Georgia', 'Times New Roman', serif;
+  opacity: 0.3;
+  filter: blur(1px);
+  animation: float 8s ease-in-out infinite;
+}
+
+[data-theme='dark'] .quote-mark {
+  color: rgba(255, 255, 255, 0.05);
 }
 
 .quote-mark-top {

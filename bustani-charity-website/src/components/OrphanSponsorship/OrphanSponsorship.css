@@ -3,6 +3,7 @@
   background-color: var(--color-background);
   padding: 2rem 0 4rem 0;
   position: relative;
+  z-index: 1;
 }
 
 .orphan-sponsorship-container {

@@ -47,6 +47,14 @@
   /* Effects */
   --color-glass-effect: rgba(113, 113, 113, 0.3);
   --color-inactive-indicator: #D9D9D9;
+  
+  /* Glow Glass Theme Variables */
+  --glass-background: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glow-primary: rgba(73, 178, 124, 0.3);
+  --glow-secondary: rgba(73, 178, 124, 0.2);
+  --glow-intense: rgba(73, 178, 124, 0.5);
 }
 
 /* ==================== CSS Variables for Dark Theme ==================== */
@@ -98,6 +106,14 @@
   /* Effects */
   --color-glass-effect: rgba(255, 255, 255, 0.3);
   --color-inactive-indicator: #404040;
+  
+  /* Glow Glass Theme Variables */
+  --glass-background: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  --glow-primary: rgba(73, 178, 124, 0.4);
+  --glow-secondary: rgba(73, 178, 124, 0.25);
+  --glow-intense: rgba(73, 178, 124, 0.6);
 }
 
 /* Default to light theme if no theme is set */

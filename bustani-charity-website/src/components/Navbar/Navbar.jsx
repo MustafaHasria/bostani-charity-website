@@ -16,6 +16,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDonationOpen, setIsMobileDonationOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isThemeChanging, setIsThemeChanging] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
   const { language, changeLanguage } = useLanguage();
   const { t } = useTranslation();
@@ -196,7 +197,15 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle theme">
+          <button 
+            className={`theme-toggle-btn ${isThemeChanging ? 'changing' : ''}`}
+            onClick={() => {
+              setIsThemeChanging(true);
+              toggleTheme();
+              setTimeout(() => setIsThemeChanging(false), 500);
+            }}
+            aria-label="Toggle theme"
+          >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           {!isLoading && isAuthenticated && user ? (
