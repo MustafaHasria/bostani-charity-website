@@ -27,15 +27,6 @@ const OrphanSponsorship = () => {
       return [];
     }
 
-    // البحث عن subcategory باسم "Orphan Support" أو ID 15
-    const orphanCategory = homeData.parent_categories?.find(
-      (cat) => cat.id === 15 || cat.name.toLowerCase().includes('orphan')
-    );
-
-    if (!orphanCategory) {
-      return [];
-    }
-
     // إنشاء خريطة للفئات
     const categoriesMap = new Map();
     if (homeData.parent_categories) {
@@ -79,8 +70,7 @@ const OrphanSponsorship = () => {
       }
     });
 
-    // إذا لم توجد حملات، نستخدم subcategories فارغة كبديل
-    return allCampaigns.length > 0 ? allCampaigns : [];
+    return allCampaigns;
   }, [homeData, t]);
 
   // حساب عدد الكروت المرئية بناءً على حجم الشاشة
@@ -204,7 +194,7 @@ const OrphanSponsorship = () => {
                   <div className="orphan-sponsorship-image">
                     <img src={item.image} alt={item.title} />
                     {item.categoryName && (
-                      <div className="campaign-category-badge">
+                      <div className="orphan-sponsorship-category-badge">
                         {item.categoryName}
                       </div>
                     )}
@@ -264,4 +254,3 @@ const OrphanSponsorship = () => {
 };
 
 export default OrphanSponsorship;
-
