@@ -39,6 +39,7 @@
   "campaigns": {
     "title": "Most Important Campaigns",
     "viewAll": "All Campaigns",
+    "more": "More",
     "campaign1": {
       "title": "Eid Sacrifices Campaign",
       "description": "Join us in bringing joy to needy families",
@@ -129,6 +130,7 @@
   "projects": {
     "title": "Bustani Projects",
     "viewAll": "All Projects",
+    "more": "More",
     "project1": {
       "title": "Bustani Medical Team",
       "description": "Your basket today might be a family's joy tomorrow",
@@ -147,6 +149,7 @@
   "orphanSponsorship": {
     "title": "Orphan Sponsorship",
     "viewAll": "All Projects",
+    "more": "More",
     "item1": {
       "title": "Children's Donation Campaign",
       "description": "Your donation creates joy in the child's heart",

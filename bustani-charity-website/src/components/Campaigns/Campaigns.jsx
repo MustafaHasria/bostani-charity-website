@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
@@ -20,6 +20,14 @@ const Campaigns = () => {
   const { t } = useTranslation();
   const { homeData, loading } = useHomeData();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(3);
+  const [canScroll, setCanScroll] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const trackRef = useRef(null);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchStartY, setTouchStartY] = useState(0);
 
   // تحويل بيانات API إلى الشكل المطلوب
   const campaigns = useMemo(() => {
@@ -92,55 +100,112 @@ const Campaigns = () => {
     });
   }, [homeData, t]);
 
-  // حساب عدد الكروت المرئية بناءً على حجم الشاشة
-  const [visibleCards, setVisibleCards] = useState(3);
-
+  // حساب عدد الكروت المرئية وفحص إمكانية التمرير
   useEffect(() => {
     const calculateVisibleCards = () => {
       const width = window.innerWidth;
+      const gap = 24; // 1.5rem = 24px
       
+      let cardWidth;
       if (width < 600) {
-        // Mobile: كرت واحد
-        setVisibleCards(1);
+        cardWidth = 280;
       } else if (width < 1024) {
-        // Tablet: كرتين
-        setVisibleCards(2);
+        cardWidth = 300;
       } else {
-        // Desktop: 3 كروت
-        setVisibleCards(3);
+        cardWidth = 320;
       }
+      
+      // حساب عدد الكروت التي يمكن عرضها
+      const cardsVisible = Math.ceil((width) / (cardWidth + gap));
+      setVisibleCards(cardsVisible);
+      
+      // إذا كان عدد الكروت أقل من أو يساوي المرئية، لا يمكن التمرير
+      setCanScroll(campaigns.length > cardsVisible);
     };
 
     calculateVisibleCards();
     window.addEventListener('resize', calculateVisibleCards);
     return () => window.removeEventListener('resize', calculateVisibleCards);
-  }, []);
+  }, [campaigns.length]);
 
+  // تمرير كرت واحد في كل مرة - بدون حدود
   const goToPrevious = () => {
+    if (!canScroll) return; // منع التقليب إذا لم تكن هناك حاجة
     setCurrentIndex((prevIndex) => {
       if (prevIndex === 0) {
-        // إذا كنا في البداية، انتقل إلى النهاية
-        return Math.max(0, campaigns.length - visibleCards);
+        return campaigns.length - 1;
       }
-      // التمرير للخلف بمقدار كرت واحد
-      return Math.max(0, prevIndex - 1);
+      return prevIndex - 1;
     });
   };
 
   const goToNext = () => {
+    if (!canScroll) return; // منع التقليب إذا لم تكن هناك حاجة
     setCurrentIndex((prevIndex) => {
-      const maxIndex = Math.max(0, campaigns.length - visibleCards);
-      if (prevIndex >= maxIndex) {
-        // إذا كنا في النهاية، ارجع إلى البداية
+      if (prevIndex >= campaigns.length - 1) {
         return 0;
       }
-      // التمرير للأمام بمقدار كرت واحد
-      return Math.min(maxIndex, prevIndex + 1);
+      return prevIndex + 1;
     });
   };
 
   const getProgressPercentage = (paid, total) => {
     return Math.round((paid / total) * 100);
+  };
+
+  // Swipe/Drag handlers for mouse
+  const handleMouseDown = (e) => {
+    if (!canScroll) return;
+    setIsDragging(true);
+    setStartX(e.pageX - trackRef.current.offsetLeft);
+    setScrollLeft(currentIndex);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || !canScroll) return;
+    e.preventDefault();
+    const x = e.pageX - trackRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch handlers for mobile
+  const handleTouchStart = (e) => {
+    if (!canScroll) return;
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!canScroll) return;
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!canScroll) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchStartX - touchEndX;
+    const diffY = touchStartY - touchEndY;
+    
+    // فقط إذا كان السحب أفقي أكثر من عمودي
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        // Swipe left - go next
+        goToNext();
+      } else {
+        // Swipe right - go previous
+        goToPrevious();
+      }
+    }
   };
 
   if (loading) {
@@ -185,32 +250,54 @@ const Campaigns = () => {
           <div className="campaigns-title-banner">
             <h2>{t('campaigns.title')}</h2>
           </div>
-          <Link to="/campaigns" className="view-all-link">
-            {t('campaigns.viewAll')}
-            {language === 'ar' ? ' ←' : ' →'}
-          </Link>
+          {/* Navigation Controls - Top Left */}
+          <div className="campaigns-nav-controls">
+            {canScroll && (
+              <>
+                <button 
+                  className="carousel-btn carousel-btn-prev"
+                  onClick={goToPrevious}
+                  aria-label="Previous slide"
+                >
+                  {language === 'ar' ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </button>
+                <button 
+                  className="carousel-btn carousel-btn-next"
+                  onClick={goToNext}
+                  aria-label="Next slide"
+                >
+                  {language === 'ar' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                </button>
+              </>
+            )}
+            <Link to="/campaigns" className="campaigns-more-btn">
+              {t('campaigns.more')}
+            </Link>
+          </div>
         </div>
         <div className="campaigns-divider"></div>
 
         {/* Carousel */}
         <div className="campaigns-carousel">
-          <button 
-            className="carousel-btn carousel-btn-prev"
-            onClick={goToPrevious}
-            aria-label="Previous slide"
-          >
-            {language === 'ar' ? <ChevronRight size={24} /> : <ChevronLeft size={24} />}
-          </button>
-
           <div className="campaigns-slider">
             <div 
-              className="campaigns-track"
+              ref={trackRef}
+              className={`campaigns-track ${!canScroll ? 'campaigns-track-centered' : ''} ${isDragging ? 'campaigns-track-dragging' : ''}`}
               style={{
-                transform: language === 'ar' 
-                  ? `translateX(${currentIndex * (100 / visibleCards)}%)`
-                  : `translateX(-${currentIndex * (100 / visibleCards)}%)`,
-                '--cards-per-view': visibleCards,
+                transform: !canScroll 
+                  ? 'none'
+                  : language === 'ar' 
+                    ? `translateX(calc(${currentIndex} * (320px + 1.5rem)))`
+                    : `translateX(calc(-${currentIndex} * (320px + 1.5rem)))`,
+                cursor: isDragging ? 'grabbing' : canScroll ? 'grab' : 'default',
               }}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {campaigns.map((campaign) => (
                 <div key={campaign.id} className="campaign-card">
@@ -250,27 +337,8 @@ const Campaigns = () => {
               ))}
             </div>
           </div>
-
-          <button 
-            className="carousel-btn carousel-btn-next"
-            onClick={goToNext}
-            aria-label="Next slide"
-          >
-            {language === 'ar' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
-          </button>
         </div>
 
-        {/* Pagination Dots */}
-        <div className="campaigns-pagination">
-          {Array.from({ length: Math.max(1, campaigns.length - visibleCards + 1) }).map((_, index) => (
-            <button
-              key={index}
-              className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => setCurrentIndex(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
