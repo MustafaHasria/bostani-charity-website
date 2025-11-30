@@ -1,0 +1,396 @@
+.zakat-calculator-page {
+  width: 100%;
+  background-color: var(--color-background);
+  padding: 2rem 2rem 4rem;
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.zakat-calculator-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+.zakat-calculator-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+[dir='rtl'] .zakat-calculator-breadcrumb {
+  justify-content: flex-start;
+}
+
+[dir='ltr'] .zakat-calculator-breadcrumb {
+  justify-content: flex-start;
+}
+
+.zakat-calculator-breadcrumb a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.zakat-calculator-breadcrumb a:hover {
+  color: var(--color-primary);
+}
+
+.breadcrumb-separator {
+  opacity: 0.7;
+}
+
+.breadcrumb-current {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Main Content */
+.zakat-calculator-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+}
+
+/* Calculator Icon */
+.calculator-icon-wrapper {
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.calculator-lottie {
+  width: 240px;
+  height: 240px;
+}
+
+/* Title */
+.zakat-calculator-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--color-catalog-card-text-primary);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+/* Description */
+.zakat-calculator-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 2rem 0;
+  color: var(--color-catalog-card-text-secondary);
+  max-width: 600px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+/* Add Asset Button */
+.add-asset-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background-color: var(--color-secondary);
+  color: var(--color-text-on-primary);
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(73, 178, 124, 0.3);
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+  font-family: inherit;
+  margin-top: 0;
+}
+
+.add-asset-plus-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+
+.add-asset-button:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(31, 76, 53, 0.4);
+}
+
+.add-asset-button:active {
+  transform: translateY(0);
+}
+
+/* Calculate Zakat Button */
+.calculate-zakat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 2rem;
+  background-color: var(--color-secondary);
+  color: var(--color-text-on-primary);
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(73, 178, 124, 0.3);
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+  font-family: inherit;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.calculate-zakat-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+
+.calculate-zakat-button:hover {
+  background-color: #3da366;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(73, 178, 124, 0.4);
+}
+
+.calculate-zakat-button:active {
+  transform: translateY(0);
+}
+
+/* Assets List */
+.assets-list {
+  margin-top: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.assets-list-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.asset-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-catalog-card-background);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.asset-item:hover {
+  border-color: var(--color-secondary);
+  box-shadow: 0 2px 8px rgba(73, 178, 124, 0.1);
+}
+
+.asset-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.asset-type {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+
+.asset-details {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.asset-value {
+  font-weight: 600;
+  color: var(--color-secondary);
+  font-size: 1rem;
+}
+
+.asset-delete-button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asset-delete-button:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+/* Zakat Results */
+.zakat-results {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--color-catalog-card-background);
+  border: 2px solid var(--color-secondary);
+  border-radius: 12px;
+  animation: fadeInUp 0.8s ease-out 1s both;
+}
+
+.zakat-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.zakat-result-label {
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.zakat-result-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.zakat-amount-row {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-border);
+}
+
+.zakat-amount {
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+}
+
+.zakat-nisab-warning {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  border-radius: 8px;
+  color: #ff9800;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .zakat-calculator-page {
+    padding: 1.5rem 1.5rem 3rem;
+  }
+
+  .zakat-calculator-breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+  }
+
+  .zakat-calculator-content {
+    padding: 0.5rem 0;
+  }
+
+  .calculator-icon-wrapper {
+    margin-bottom: 1.25rem;
+  }
+
+  .calculator-lottie {
+    width: 200px;
+    height: 200px;
+  }
+
+  .zakat-calculator-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .zakat-calculator-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.7;
+  }
+
+  .add-asset-button {
+    padding: 0.875rem 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .zakat-calculator-page {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .zakat-calculator-breadcrumb {
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .calculator-icon-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .calculator-lottie {
+    width: 170px;
+    height: 170px;
+  }
+
+  .zakat-calculator-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .zakat-calculator-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .add-asset-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .add-asset-button svg,
+  .add-asset-plus-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+

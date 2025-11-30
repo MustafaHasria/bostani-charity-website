@@ -1,99 +1,96 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useHomeData } from '../../context/HomeDataContext';
+import detailsIcon from '../../assets/images/details-icon.png';
 import './Campaigns.css';
+
+// دالة لتقليل النص إلى 50 حرف مع إضافة "..."
+const truncateDescription = (text, maxLength = 50) => {
+  if (!text || text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + '...';
+};
 
 const Campaigns = () => {
   const { language } = useLanguage();
   const { t } = useTranslation();
+  const { homeData, loading } = useHomeData();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // بيانات الحملات الوهمية (9 حملات لتكون 3 مجموعات)
-  const campaigns = [
-    {
-      id: 1,
-      title: t('campaigns.campaign1.title'),
-      description: t('campaigns.campaign1.description'),
-      image: 'https://images.unsplash.com/photo-1606914509765-1477099e4315?w=400&h=300&fit=crop',
-      paid: 1300,
-      total: 6600,
-      remaining: 5300,
-    },
-    {
-      id: 2,
-      title: t('campaigns.campaign2.title'),
-      description: t('campaigns.campaign2.description'),
-      image: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&h=300&fit=crop',
-      paid: 5200,
-      total: 8500,
-      remaining: 3300,
-    },
-    {
-      id: 3,
-      title: t('campaigns.campaign3.title'),
-      description: t('campaigns.campaign3.description'),
-      image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=300&fit=crop',
-      paid: 5300,
-      total: 10600,
-      remaining: 5300,
-    },
-    {
-      id: 4,
-      title: t('campaigns.campaign1.title') + ' 2',
-      description: t('campaigns.campaign1.description'),
-      image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop',
-      paid: 2100,
-      total: 8000,
-      remaining: 5900,
-    },
-    {
-      id: 5,
-      title: t('campaigns.campaign2.title') + ' 2',
-      description: t('campaigns.campaign2.description'),
-      image: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=300&fit=crop',
-      paid: 4500,
-      total: 9000,
-      remaining: 4500,
-    },
-    {
-      id: 6,
-      title: t('campaigns.campaign3.title') + ' 2',
-      description: t('campaigns.campaign3.description'),
-      image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=400&h=300&fit=crop',
-      paid: 6200,
-      total: 12000,
-      remaining: 5800,
-    },
-    {
-      id: 7,
-      title: t('campaigns.campaign1.title') + ' 3',
-      description: t('campaigns.campaign1.description'),
-      image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&h=300&fit=crop',
-      paid: 1800,
-      total: 7000,
-      remaining: 5200,
-    },
-    {
-      id: 8,
-      title: t('campaigns.campaign2.title') + ' 3',
-      description: t('campaigns.campaign2.description'),
-      image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop',
-      paid: 3800,
-      total: 7500,
-      remaining: 3700,
-    },
-    {
-      id: 9,
-      title: t('campaigns.campaign3.title') + ' 3',
-      description: t('campaigns.campaign3.description'),
-      image: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=300&fit=crop',
-      paid: 4900,
-      total: 11000,
-      remaining: 6100,
-    },
-  ];
+  // تحويل بيانات API إلى الشكل المطلوب
+  const campaigns = useMemo(() => {
+    if (!homeData?.featured_campaigns) {
+      return [];
+    }
+
+    // إنشاء خريطة للحملات الكاملة من subcategories مع ربطها بـ subcategory
+    const fullCampaignsMap = new Map();
+    const campaignToSubcategoryMap = new Map(); // خريطة لربط الحملة بـ subcategory
+    if (homeData.subcategories?.data) {
+      homeData.subcategories.data.forEach((subcategory) => {
+        if (subcategory.campaigns && Array.isArray(subcategory.campaigns)) {
+          subcategory.campaigns.forEach((campaign) => {
+            fullCampaignsMap.set(campaign.id, campaign);
+            // ربط الحملة بـ subcategory
+            campaignToSubcategoryMap.set(campaign.id, subcategory);
+          });
+        }
+      });
+    }
+
+    // إنشاء خريطة للفئات
+    const categoriesMap = new Map();
+    if (homeData.parent_categories) {
+      homeData.parent_categories.forEach((cat) => {
+        categoriesMap.set(cat.id, cat.name);
+      });
+    }
+    
+    // إنشاء خريطة للفئات الفرعية
+    const subcategoriesMap = new Map();
+    if (homeData.subcategories?.data) {
+      homeData.subcategories.data.forEach((subcat) => {
+        subcategoriesMap.set(subcat.id, subcat.name);
+      });
+    }
+
+    // دمج بيانات featured_campaigns مع البيانات الكاملة من subcategories
+    return homeData.featured_campaigns.map((featuredCampaign) => {
+      const fullCampaign = fullCampaignsMap.get(featuredCampaign.id);
+      const subcategory = campaignToSubcategoryMap.get(featuredCampaign.id);
+      
+      // البحث عن اسم الفئة
+      let categoryName = null;
+      if (fullCampaign?.category_id) {
+        // البحث في الفئات الفرعية أولاً
+        categoryName = subcategoriesMap.get(fullCampaign.category_id);
+        // إذا لم تجد، ابحث في الفئات الرئيسية
+        if (!categoryName) {
+          categoryName = categoriesMap.get(fullCampaign.category_id);
+        }
+      }
+      // إذا لم تجد، استخدم اسم subcategory التي تحتوي على الحملة
+      if (!categoryName && subcategory) {
+        categoryName = subcategory.name;
+      }
+      
+      // استخدام البيانات الكاملة إذا كانت متوفرة، وإلا استخدام البيانات من featured_campaigns
+      return {
+        id: featuredCampaign.id,
+        title: fullCampaign?.title || featuredCampaign.title || featuredCampaign.name,
+        description: fullCampaign?.description || t('campaigns.campaign1.description'),
+        image: fullCampaign?.image || featuredCampaign.image || 'https://images.unsplash.com/photo-1606914509765-1477099e4315?w=400&h=300&fit=crop',
+        paid: fullCampaign?.collected_amount || 0,
+        total: fullCampaign?.goal_amount || 0,
+        remaining: (fullCampaign?.goal_amount || 0) - (fullCampaign?.collected_amount || 0),
+        categoryName: categoryName || null,
+      };
+    });
+  }, [homeData, t]);
 
   // حساب عدد الكروت المرئية بناءً على حجم الشاشة
   const [visibleCards, setVisibleCards] = useState(3);
@@ -119,38 +116,66 @@ const Campaigns = () => {
     return () => window.removeEventListener('resize', calculateVisibleCards);
   }, []);
 
-  const totalGroups = Math.ceil(campaigns.length / visibleCards);
-
-  // Auto-play carousel
-  useEffect(() => {
-    if (totalGroups <= 1) return; // لا حاجة للكاروسيل إذا كانت جميع الكروت مرئية
-    
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % totalGroups);
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [totalGroups]);
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? totalGroups - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex === 0) {
+        // إذا كنا في البداية، انتقل إلى النهاية
+        return Math.max(0, campaigns.length - visibleCards);
+      }
+      // التمرير للخلف بمقدار كرت واحد
+      return Math.max(0, prevIndex - 1);
+    });
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === totalGroups - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => {
+      const maxIndex = Math.max(0, campaigns.length - visibleCards);
+      if (prevIndex >= maxIndex) {
+        // إذا كنا في النهاية، ارجع إلى البداية
+        return 0;
+      }
+      // التمرير للأمام بمقدار كرت واحد
+      return Math.min(maxIndex, prevIndex + 1);
+    });
   };
 
   const getProgressPercentage = (paid, total) => {
     return Math.round((paid / total) * 100);
   };
+
+  if (loading) {
+    return (
+      <section className="campaigns-section">
+        <div className="campaigns-container">
+          <div className="campaigns-header">
+            <div className="campaigns-title-banner">
+              <h2>{t('campaigns.title')}</h2>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', padding: '3rem' }}>
+            <p>{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!campaigns || campaigns.length === 0) {
+    return (
+      <section className="campaigns-section">
+        <div className="campaigns-container">
+          <div className="campaigns-header">
+            <div className="campaigns-title-banner">
+              <h2>{t('campaigns.title')}</h2>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', padding: '3rem' }}>
+            <p>{language === 'ar' ? 'لا توجد حملات متاحة' : 'No campaigns available'}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="campaigns-section">
@@ -182,49 +207,45 @@ const Campaigns = () => {
               className="campaigns-track"
               style={{
                 transform: language === 'ar' 
-                  ? `translateX(${currentIndex * 100}%)`
-                  : `translateX(-${currentIndex * 100}%)`,
+                  ? `translateX(${currentIndex * (100 / visibleCards)}%)`
+                  : `translateX(-${currentIndex * (100 / visibleCards)}%)`,
                 '--cards-per-view': visibleCards,
               }}
             >
-              {Array.from({ length: totalGroups }).map((_, groupIndex) => (
-                <div 
-                  key={groupIndex} 
-                  className="campaigns-group"
-                  style={{ '--cards-per-view': visibleCards }}
-                >
-                  {campaigns
-                    .slice(groupIndex * visibleCards, (groupIndex + 1) * visibleCards)
-                    .map((campaign) => (
-                      <div key={campaign.id} className="campaign-card">
-                        <div className="campaign-image">
-                          <img src={campaign.image} alt={campaign.title} />
-                        </div>
-                        <div className="campaign-content">
-                          <h3 className="campaign-title">{campaign.title}</h3>
-                          <p className="campaign-description">{campaign.description}</p>
-                          <div className="campaign-progress">
-                            <div className="progress-bar">
-                              <div 
-                                className="progress-fill"
-                                style={{ width: `${getProgressPercentage(campaign.paid, campaign.total)}%` }}
-                              ></div>
-                            </div>
-                            <div className="progress-info">
-                              <span className="progress-paid">
-                                {t('campaigns.campaign1.paid')} {campaign.paid.toLocaleString()}
-                              </span>
-                              <span className="progress-remaining">
-                                {t('campaigns.campaign1.remaining')} {campaign.remaining.toLocaleString()}
-                              </span>
-                            </div>
-                          </div>
-                          <Link to={`/campaigns/${campaign.id}`} className="campaign-btn">
-                            {t('campaigns.campaign1.details')}
-                          </Link>
-                        </div>
+              {campaigns.map((campaign) => (
+                <div key={campaign.id} className="campaign-card">
+                  <div className="campaign-image">
+                    <img src={campaign.image} alt={campaign.title} />
+                    {campaign.categoryName && (
+                      <div className="campaign-category-badge">
+                        {campaign.categoryName}
                       </div>
-                    ))}
+                    )}
+                  </div>
+                  <div className="campaign-content">
+                    <h3 className="campaign-title">{campaign.title}</h3>
+                    <p className="campaign-description">{truncateDescription(campaign.description)}</p>
+                    <div className="campaign-progress">
+                      <div className="progress-bar">
+                        <div 
+                          className="progress-fill"
+                          style={{ width: `${getProgressPercentage(campaign.paid, campaign.total)}%` }}
+                        ></div>
+                      </div>
+                      <div className="progress-info">
+                        <span className="progress-paid">
+                          {t('campaigns.campaign1.paid')} {campaign.paid.toLocaleString()}
+                        </span>
+                        <span className="progress-remaining">
+                          {t('campaigns.campaign1.remaining')} {campaign.remaining.toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                    <Link to={`/campaigns/${campaign.id}`} className="campaign-btn">
+                      <span>{t('campaigns.campaign1.details')}</span>
+                      <img src={detailsIcon} alt="" className="details-icon" />
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
@@ -241,11 +262,11 @@ const Campaigns = () => {
 
         {/* Pagination Dots */}
         <div className="campaigns-pagination">
-          {Array.from({ length: totalGroups }).map((_, index) => (
+          {Array.from({ length: Math.max(1, campaigns.length - visibleCards + 1) }).map((_, index) => (
             <button
               key={index}
               className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => goToSlide(index)}
+              onClick={() => setCurrentIndex(index)}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

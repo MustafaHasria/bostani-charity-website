@@ -10,7 +10,7 @@ const translations = {
 export const useTranslation = () => {
   const { language } = useLanguage();
 
-  const t = (key) => {
+  const t = (key, params = {}) => {
     const keys = key.split('.');
     let value = translations[language];
 
@@ -22,7 +22,16 @@ export const useTranslation = () => {
       }
     }
 
-    return value || key;
+    let result = value || key;
+
+    // دعم الاستبدال في النصوص
+    if (typeof result === 'string' && Object.keys(params).length > 0) {
+      Object.keys(params).forEach((paramKey) => {
+        result = result.replace(new RegExp(`{{${paramKey}}}`, 'g'), params[paramKey]);
+      });
+    }
+
+    return result;
   };
 
   return { t, language };

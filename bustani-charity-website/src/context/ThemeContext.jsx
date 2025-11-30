@@ -12,20 +12,16 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // التحقق من localStorage أولاً
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       return savedTheme === 'dark';
     }
-    // إذا لم يكن هناك تفضيل محفوظ، استخدم تفضيل النظام
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {
-    // حفظ التفضيل في localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     
-    // تطبيق الـ theme على document
     if (isDarkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
@@ -33,11 +29,9 @@ export const ThemeProvider = ({ children }) => {
     }
   }, [isDarkMode]);
 
-  // الاستماع لتغييرات تفضيل النظام
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleThemeChange = (e) => {
-      // فقط إذا لم يكن هناك تفضيل محفوظ
       if (!localStorage.getItem('theme')) {
         setIsDarkMode(e.matches);
       }

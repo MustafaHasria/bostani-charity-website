@@ -1,0 +1,222 @@
+.manual-zakat-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.manual-zakat-modal {
+  position: relative;
+  background-color: var(--color-background);
+  border-radius: 16px;
+  padding: 2rem 2.5rem 2.5rem;
+  max-width: 550px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  margin: auto;
+}
+
+/* Close Button */
+.manual-zakat-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #F5F5F5;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+[dir='ltr'] .manual-zakat-modal-close {
+  left: auto;
+  right: 1.25rem;
+}
+
+.manual-zakat-modal-close:hover {
+  background-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+/* Title */
+.manual-zakat-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333333;
+  text-align: right;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  padding-right: 0;
+}
+
+[dir='ltr'] .manual-zakat-modal-title {
+  text-align: left;
+  padding-left: 0;
+}
+
+[data-theme='dark'] .manual-zakat-modal-title {
+  color: var(--color-text-primary);
+}
+
+/* Form */
+.manual-zakat-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.manual-zakat-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* Input */
+.manual-zakat-input-wrapper {
+  position: relative;
+}
+
+.manual-zakat-input {
+  width: 100%;
+  padding: 1rem 4.5rem 1rem 1.25rem;
+  background-color: #F5F5F5;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #333333;
+  transition: all 0.2s ease;
+}
+
+[dir='ltr'] .manual-zakat-input {
+  padding: 1rem 1.25rem 1rem 4.5rem;
+}
+
+[data-theme='dark'] .manual-zakat-input {
+  background-color: var(--color-catalog-background);
+  color: var(--color-text-primary);
+}
+
+.manual-zakat-input:focus {
+  outline: none;
+  background-color: #EEEEEE;
+}
+
+[data-theme='dark'] .manual-zakat-input:focus {
+  background-color: var(--color-catalog-card-background);
+}
+
+.manual-zakat-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.manual-zakat-currency-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.manual-zakat-currency-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+
+[dir='ltr'] .manual-zakat-currency-icon {
+  right: auto;
+  left: 0.75rem;
+}
+
+/* Submit Button */
+.manual-zakat-submit-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #047D3F;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.manual-zakat-submit-button:hover {
+  background-color: #059851;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(4, 125, 63, 0.3);
+}
+
+.manual-zakat-submit-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .manual-zakat-modal {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 1rem;
+  }
+
+  .manual-zakat-modal-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .manual-zakat-modal-form {
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+}
+

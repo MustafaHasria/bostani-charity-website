@@ -4,6 +4,7 @@
   padding: 5rem 2rem;
   position: relative;
   overflow: hidden;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .about-container {
@@ -30,6 +31,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 [dir='rtl'] .about-title {
@@ -55,6 +57,7 @@
   margin: 0;
   text-align: justify;
   text-align-last: center;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 [dir='rtl'] .about-text {

@@ -34,7 +34,7 @@ const Zakat = () => {
           
           <p className="zakat-cta-text">{t('zakat.ctaText')}</p>
           
-          <Link to="/donate/zakat" className="zakat-button">
+          <Link to="/zakat" className="zakat-button">
             <span>{t('zakat.buttonText')}</span>
             <img src={heartHandRightImage} alt="Donate" className="zakat-button-icon" />
           </Link>

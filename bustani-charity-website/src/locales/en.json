@@ -2,7 +2,8 @@
   "nav": {
     "home": "Home",
     "about": "About Us",
-    "projects": "Bustani Projects",
+    "campaigns": "Campaigns",
+    "zakat": "Zakat",
     "donations": "Donation Sections",
     "contact": "Contact Us"
   },
@@ -29,6 +30,11 @@
     "titleHighlight": "Bustani Foundation",
     "titleRest": "for Community Services",
     "description": "Bustani Foundation for Community Service plants hope in every home and child, where your donations turn into sponsorship for needy families and education and health for children, in addition to sustainable food and housing support. More than five hundred beneficiaries live a better life every month thanks to your generosity, and together we develop the community step by step."
+  },
+  "campaignsPage": {
+    "title": "Campaigns",
+    "subtitle": "Response, seasonal, and relief campaigns organized by the Molham Volunteer Team to support its projects",
+    "filter": "Filter"
   },
   "campaigns": {
     "title": "Most Important Campaigns",
@@ -60,6 +66,65 @@
     "description": "Zakat is not just spending... rather, it is an act of worship that brings one closer to God, a purification for the soul and wealth, a bridge between the rich and the poor, a guarantee for the stability of society, and a divine promise of blessing and forgiveness.",
     "ctaText": "Donate now with the Zakat of your wealth through Bustani Foundation for Community Service",
     "buttonText": "Donate Now"
+  },
+  "zakatPage": {
+    "title": "Zakat",
+    "calculator": {
+      "title": "Zakat Calculator",
+      "description": "Add your cash and non-cash assets to calculate the Zakat on the wealth you owe"
+    },
+    "manual": {
+      "title": "Manually enter Zakat amount",
+      "description": "Manually enter Zakat amount"
+    }
+  },
+  "zakatCalculator": {
+    "title": "Zakat Calculator",
+    "description": "Add your cash and non-cash assets to calculate the Zakat on the wealth you owe",
+    "addAsset": "Add Asset",
+    "assetsList": "Assets List",
+    "deleteAsset": "Delete Asset",
+    "calculateZakat": "Calculate Zakat",
+    "totalValue": "Total Value",
+    "zakatAmount": "Zakat Amount Due",
+    "nisabWarning": "Assets do not meet the required Nisab threshold (85 grams of gold or 595 grams of silver)"
+  },
+  "zakatResult": {
+    "title": "Zakat Calculation Result",
+    "totalAssets": "Total Assets",
+    "totalValue": "Total Value",
+    "zakatAmount": "Zakat Amount Due",
+    "zakatNote": "Zakat rate is 2.5% of total assets that meet Nisab threshold",
+    "nisabMet": "Nisab Threshold Met",
+    "nisabMetDesc": "Your assets have reached the required Nisab threshold for Zakat",
+    "nisabNotMet": "Nisab Threshold Not Met",
+    "nisabNotMetDesc": "Your assets have not reached the required Nisab threshold (85 grams of gold or 595 grams of silver)",
+    "close": "Close",
+    "donateNow": "Donate Now"
+  },
+  "addAsset": {
+    "title": "Add Asset",
+    "classification": "Asset Classification",
+    "value": "Cash Asset Value",
+    "enterValue": "Enter Value",
+    "weight": "Weight",
+    "grams": "grams",
+    "enterWeight": "Enter weight in grams",
+    "pricePerGram": "Price per gram",
+    "enterPricePerGram": "Enter price per gram",
+    "addButton": "Add",
+    "types": {
+      "cash": "Cash Asset",
+      "gold": "Gold",
+      "silver": "Silver",
+      "stocks": "Stocks",
+      "business": "Business"
+    }
+  },
+  "manualZakat": {
+    "title": "Manual Zakat Entry",
+    "placeholder": "Enter Zakat amount in US Dollar",
+    "addButton": "Add"
   },
   "projects": {
     "title": "Bustani Projects",
@@ -104,6 +169,55 @@
       "details": "Campaign Details"
     }
   },
+  "campaignDetails": {
+    "required": "Required",
+    "donate": "Donate",
+    "share": "Share",
+    "tabs": {
+      "overview": "Overview",
+      "details": "Details",
+      "donations": "Donations",
+      "comments": "Comments"
+    },
+    "metadata": {
+      "campaignNumber": "Campaign Number",
+      "category": "Category",
+      "responsibleSection": "Responsible Section",
+      "currentStatus": "Current Status"
+    },
+    "categoryValue": "Supporting campaign for Eid al-Adha donations",
+    "responsibleSectionValue": "Bustani Association / Aleppo Branch",
+    "currentStatusValue": "Half of the campaign has been secured",
+    "donations": {
+      "donorName": "Donor Name",
+      "donorNumber": "Donor Number",
+      "amount": "Donated Amount",
+      "email": "Email"
+    },
+    "noData": {
+      "overview": "No data available in overview",
+      "details": "No data available in details",
+      "donations": "No donations available",
+      "comments": "No comments available"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Please log in to your account!",
+    "email": "Email",
+    "emailPlaceholder": "Enter email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordHint": "Must be at least 8 characters.",
+    "rememberMe": "Remember password",
+    "forgotPassword": "Forgot password",
+    "button": "Sign In",
+    "loading": "Signing in...",
+    "error": "An error occurred during login. Please try again.",
+    "success": "Login successful!",
+    "promoTitle": "Bustani Charity",
+    "promoDescription": "Track the progress of your donation campaigns and view statistics directly"
+  },
   "footer": {
     "contact": {
       "title": "Contact Us",
@@ -122,6 +236,22 @@
       "title": "Follow Us"
     },
     "copyright": "Bustani Foundation for Community Service - All rights reserved 2023 - 2025"
+  },
+  "quickDonation": {
+    "title": "General and Quick Donation",
+    "selectType": "Choose Donation Type",
+    "types": {
+      "general": "General Donation"
+    },
+    "frequencies": {
+      "monthly": "Monthly Donation",
+      "weekly": "Weekly Donation",
+      "oneTime": "One-time Donation"
+    },
+    "customAmount": "Other Amount",
+    "enterAmount": "Enter Amount",
+    "selectAmount": "Please select an amount",
+    "proceedPayment": "Proceed with Payment Now {{amount}}"
   }
 }
 

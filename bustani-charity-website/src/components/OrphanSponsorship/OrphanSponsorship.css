@@ -3,6 +3,7 @@
   background-color: var(--color-background);
   padding: 4rem 2rem;
   position: relative;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .orphan-sponsorship-container {
@@ -78,9 +79,10 @@
 
 .orphan-sponsorship-track {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  gap: 1.5rem;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
-  justify-content: center; /* تمركز الكروت في منتصف الكاروسيل */
+  align-items: stretch;
 }
 
 [dir='rtl'] .orphan-sponsorship-track {
@@ -91,31 +93,6 @@
   flex-direction: row;
 }
 
-.orphan-sponsorship-group {
-  min-width: 100%;
-  flex-shrink: 0;
-  display: grid;
-  grid-template-columns: repeat(var(--cards-per-view, 3), 1fr); /* ديناميكي: يستخدم عدد الكروت المحسوب */
-  gap: 1.5rem;
-  padding: 0 0.5rem;
-  align-items: stretch;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.orphan-sponsorship-group > * {
-  min-width: 0;
-  max-width: 100%;
-  height: 100%;
-}
-
-[dir='rtl'] .orphan-sponsorship-group,
-[dir='ltr'] .orphan-sponsorship-group {
-  grid-template-columns: repeat(var(--cards-per-view, 3), 1fr); /* ديناميكي: يستخدم عدد الكروت المحسوب */
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
 .orphan-sponsorship-card {
   background-color: var(--color-surface);
   border-radius: 16px;
@@ -123,20 +100,42 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+  width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
+  min-width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
+  max-width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
   height: 100%;
   min-height: 380px;
   position: relative;
   box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out both;
+  flex-shrink: 0;
+}
+
+.orphan-sponsorship-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.orphan-sponsorship-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.orphan-sponsorship-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.orphan-sponsorship-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 [dir='rtl'] .orphan-sponsorship-card,
 [dir='ltr'] .orphan-sponsorship-card {
-  width: 100%;
-  max-width: 100%;
+  width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
+  min-width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
+  max-width: calc((100% - (var(--cards-per-view, 3) - 1) * 1.5rem) / var(--cards-per-view, 3));
   height: 100%;
+  flex-shrink: 0;
 }
 
 .orphan-sponsorship-image {
@@ -151,6 +150,26 @@
   box-sizing: border-box;
 }
 
+.campaign-category-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: rgba(4, 125, 63, 0.9);
+  color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[dir='ltr'] .campaign-category-badge {
+  right: auto;
+  left: 0.75rem;
+}
+
 [dir='rtl'] .orphan-sponsorship-image,
 [dir='ltr'] .orphan-sponsorship-image {
   width: calc(100% - 1.5rem);
@@ -162,14 +181,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
   display: block;
   max-width: 100%;
 }
 
 .orphan-sponsorship-card:hover .orphan-sponsorship-image img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .orphan-sponsorship-content {
@@ -269,19 +288,55 @@
   text-align: center;
   font-weight: 600;
   font-size: 0.875rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: absolute;
   bottom: 1rem;
   left: 1rem;
   right: 1rem;
   width: calc(100% - 2rem);
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.orphan-sponsorship-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.orphan-sponsorship-btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .orphan-sponsorship-btn:hover {
   background-color: #047D3F;
   opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(4, 125, 63, 0.4);
+}
+
+.orphan-sponsorship-btn:active {
+  transform: translateY(-1px);
+}
+
+.orphan-sponsorship-btn .details-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 /* Carousel Navigation Buttons */
@@ -395,8 +450,14 @@
   }
 
   .orphan-sponsorship-group {
-    grid-template-columns: repeat(var(--cards-per-view, 2), 1fr); /* ديناميكي: يستخدم عدد الكروت المحسوب */
+    display: flex;
     gap: 1.25rem;
+  }
+
+  .orphan-sponsorship-card {
+    width: calc((100% - (var(--cards-per-view, 2) - 1) * 1.25rem) / var(--cards-per-view, 2));
+    min-width: calc((100% - (var(--cards-per-view, 2) - 1) * 1.25rem) / var(--cards-per-view, 2));
+    max-width: calc((100% - (var(--cards-per-view, 2) - 1) * 1.25rem) / var(--cards-per-view, 2));
   }
 
   .orphan-sponsorship-image {
@@ -437,18 +498,20 @@
   }
 
   .orphan-sponsorship-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 
   [dir='rtl'] .orphan-sponsorship-header {
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   [dir='ltr'] .orphan-sponsorship-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .orphan-sponsorship-title-banner {
@@ -464,30 +527,32 @@
   }
 
   .orphan-sponsorship-slider {
-    width: calc(100% - 5rem); /* Mobile: تقليل العرض لإفساح المجال للأزرار */
-    margin: 0 auto; /* Mobile: تمركز الكاروسيل */
+    width: calc(100% - 5rem); 
+    margin: 0 auto; 
   }
 
   .orphan-sponsorship-track {
-    justify-content: flex-start; /* Mobile: ابدأ من البداية */
+    justify-content: flex-start; 
     width: 100%;
   }
 
   .orphan-sponsorship-group {
-    grid-template-columns: repeat(var(--cards-per-view, 1), 1fr); /* Mobile: ديناميكي - يستخدم عدد الكروت المحسوب */
+    display: flex;
     gap: 0;
     padding: 0;
-    width: 100%; /* Mobile: كل مجموعة تأخذ 100% من عرض slider */
-    min-width: 100%; /* Mobile: تأكد من أن كل مجموعة تأخذ 100% */
+    width: 100%; 
+    min-width: 100%; 
     max-width: 100%;
-    flex-shrink: 0; /* Mobile: منع التقلص */
+    flex-shrink: 0; 
   }
 
   .orphan-sponsorship-card {
-    width: 100%; /* Mobile: الكرت يأخذ العرض الكامل */
-    margin: 0; /* Mobile: إزالة margin */
+    width: 100%; 
+    min-width: 100%;
     max-width: 100%;
+    margin: 0; 
     min-height: 340px;
+    flex-shrink: 0;
   }
 
   .orphan-sponsorship-image {
@@ -607,19 +672,18 @@
   }
 
   [dir='rtl'] .carousel-btn-prev {
-    right: 0.25rem; /* Mobile: الأزرار داخل الشاشة */
+    right: 0.25rem;
   }
 
   [dir='ltr'] .carousel-btn-prev {
-    left: 0.25rem; /* Mobile: الأزرار داخل الشاشة */
+    left: 0.25rem; 
   }
 
   [dir='rtl'] .carousel-btn-next {
-    left: 0.25rem; /* Mobile: الأزرار داخل الشاشة */
+    left: 0.25rem;
   }
-
   [dir='ltr'] .carousel-btn-next {
-    right: 0.25rem; /* Mobile: الأزرار داخل الشاشة */
+    right: 0.25rem; 
   }
 }
 

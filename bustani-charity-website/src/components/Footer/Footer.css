@@ -3,6 +3,7 @@
   background-color: #1F4C35;
   padding: 3rem 2rem 1.5rem 2rem;
   color: #ffffff;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .footer-container {
@@ -56,12 +57,18 @@
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.95rem;
-  transition: color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 0.5rem;
+  display: inline-block;
 }
 
 .footer-link:hover {
   color: #ffffff;
+  transform: translateX(4px);
+}
+
+[dir='ltr'] .footer-link:hover {
+  transform: translateX(-4px);
 }
 
 .footer-social {
@@ -80,13 +87,14 @@
   justify-content: center;
   color: #ffffff;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .social-icon:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .footer-logo-section {
