@@ -618,25 +618,59 @@
     font-size: 1.2rem;
   }
 
+  /* تمرير حر على الموبايل */
   .orphan-sponsorship-slider {
     width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-left: 1rem;
+    padding-right: 0;
+  }
+
+  [dir='ltr'] .orphan-sponsorship-slider {
+    padding-left: 0;
+    padding-right: 1rem;
+  }
+
+  .orphan-sponsorship-slider::-webkit-scrollbar {
+    display: none;
   }
 
   .orphan-sponsorship-track {
-    width: 100%;
+    width: max-content !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   .orphan-sponsorship-card {
-    width: calc(100% - 2rem);
-    min-width: calc(100% - 2rem);
-    max-width: calc(100% - 2rem);
-    margin: 0 auto;
+    width: 85%;
+    min-width: 85%;
+    max-width: 85%;
+    margin: 0;
     flex-shrink: 0;
     height: 480px;
     min-height: 480px;
     max-height: 480px;
     display: flex;
     flex-direction: column;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .orphan-sponsorship-track {
+    gap: 1rem;
+    padding-left: 0;
+    padding-right: 1rem;
+  }
+
+  [dir='ltr'] .orphan-sponsorship-track {
+    padding-left: 1rem;
+    padding-right: 0;
   }
 
   .orphan-sponsorship-image {

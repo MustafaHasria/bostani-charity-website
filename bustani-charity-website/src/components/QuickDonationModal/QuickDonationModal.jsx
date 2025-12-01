@@ -45,11 +45,15 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
       document.addEventListener('keydown', handleEsc);
       // منع التمرير في الخلفية
       document.body.style.overflow = 'hidden';
+      document.body.style.overflowY = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'unset';
+      // إعادة التمرير بعد إغلاق النافذة
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow-y');
+      document.body.style.removeProperty('overflow-x');
     };
   }, [isOpen, isClosing, handleClose]);
 

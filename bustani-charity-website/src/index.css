@@ -61,10 +61,18 @@ button:focus-visible {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 0;
+  overflow-y: auto; /* تفعيل التمرير */
+  overflow-x: hidden;
+}
+
+body {
+  overflow-y: auto; /* تفعيل التمرير */
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* Prevent scroll restoration jump on page load */
-html, body {
+html:not(.loaded), body:not(.loaded) {
   scroll-behavior: auto !important;
 }
 
@@ -73,16 +81,27 @@ html.loaded, body.loaded {
   scroll-behavior: smooth;
 }
 
-/* إخفاء scrollbar من الموقع بالكامل */
+/* إخفاء scrollbar من الموقع بالكامل - فقط إخفاء الشريط، التمرير يعمل */
 /* Firefox */
-html, body, * {
-  scrollbar-width: none;
+html, body {
+  scrollbar-width: none; /* Firefox - يخفي scrollbar لكن التمرير يعمل */
   -ms-overflow-style: none; /* IE and Edge */
 }
 
 /* إخفاء scrollbar في Webkit browsers (Chrome, Safari, Edge) */
 html::-webkit-scrollbar,
-body::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* إخفاء scrollbar من العناصر القابلة للتمرير الأخرى (لكن بدون منع التمرير) */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
 *::-webkit-scrollbar {
   display: none;
   width: 0;

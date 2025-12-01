@@ -26,8 +26,10 @@ const Campaigns = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const trackRef = useRef(null);
+  const sliderRef = useRef(null);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // تحويل بيانات API إلى الشكل المطلوب
   const campaigns = useMemo(() => {
@@ -104,6 +106,7 @@ const Campaigns = () => {
   useEffect(() => {
     const calculateVisibleCards = () => {
       const width = window.innerWidth;
+      setIsMobile(width <= 768);
       const gap = 24; // 1.5rem = 24px
       
       let cardWidth;
@@ -128,30 +131,168 @@ const Campaigns = () => {
     return () => window.removeEventListener('resize', calculateVisibleCards);
   }, [campaigns.length]);
 
+  // تحديث currentIndex عند التمرير على الموبايل
+  useEffect(() => {
+    if (!isMobile || !sliderRef.current) return;
+
+    const slider = sliderRef.current;
+    const cards = slider.querySelectorAll('.campaign-card');
+    
+    const handleScroll = () => {
+      if (!cards.length) return;
+      
+      // العثور على الكرت الأقرب إلى بداية العرض
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+      const sliderRect = slider.getBoundingClientRect();
+      
+      cards.forEach((card, index) => {
+        const cardRect = card.getBoundingClientRect();
+        const distance = Math.abs(cardRect.left - sliderRect.left);
+        
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+      
+      if (closestIndex !== currentIndex) {
+        setCurrentIndex(closestIndex);
+      }
+    };
+
+    slider.addEventListener('scroll', handleScroll, { passive: true });
+    return () => slider.removeEventListener('scroll', handleScroll);
+  }, [isMobile, currentIndex, campaigns.length]);
+
   // تمرير كرت واحد في كل مرة - بدون حدود
   const goToPrevious = () => {
     if (!canScroll) return; // منع التقليب إذا لم تكن هناك حاجة
-    setCurrentIndex((prevIndex) => {
-      if (prevIndex === 0) {
-        return campaigns.length - 1;
+    
+    if (isMobile && sliderRef.current) {
+      // على الموبايل: استخدم scrollIntoView
+      const cards = sliderRef.current.querySelectorAll('.campaign-card');
+      const newIndex = currentIndex === 0 ? campaigns.length - 1 : currentIndex - 1;
+      setCurrentIndex(newIndex);
+      
+      if (cards[newIndex]) {
+        cards[newIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start'
+        });
       }
-      return prevIndex - 1;
-    });
+    } else {
+      // على سطح المكتب: استخدم transform
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex === 0) {
+          return campaigns.length - 1;
+        }
+        return prevIndex - 1;
+      });
+    }
   };
 
   const goToNext = () => {
     if (!canScroll) return; // منع التقليب إذا لم تكن هناك حاجة
-    setCurrentIndex((prevIndex) => {
-      if (prevIndex >= campaigns.length - 1) {
-        return 0;
+    
+    if (isMobile && sliderRef.current) {
+      // على الموبايل: استخدم scrollIntoView
+      const cards = sliderRef.current.querySelectorAll('.campaign-card');
+      const newIndex = currentIndex >= campaigns.length - 1 ? 0 : currentIndex + 1;
+      setCurrentIndex(newIndex);
+      
+      if (cards[newIndex]) {
+        cards[newIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start'
+        });
       }
-      return prevIndex + 1;
-    });
+    } else {
+      // على سطح المكتب: استخدم transform
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex >= campaigns.length - 1) {
+          return 0;
+        }
+        return prevIndex + 1;
+      });
+    }
   };
 
   const getProgressPercentage = (paid, total) => {
     return Math.round((paid / total) * 100);
   };
+
+  // دعم التمرير بعجلة الماوس على سطح المكتب
+  useEffect(() => {
+    if (isMobile || !canScroll || !trackRef.current) return;
+
+    const track = trackRef.current;
+    let wheelTimeout = null;
+    let isWheeling = false;
+
+    const handleWheel = (e) => {
+      if (!canScroll) {
+        // إذا لم يكن هناك حاجة للتمرير، اترك التمرير للصفحة
+        return;
+      }
+
+      // التحقق من اتجاه التمرير
+      const deltaX = e.deltaX || 0;
+      const deltaY = e.deltaY || 0;
+      
+      // السماح بالتمرير العمودي (للصفحة) - لا نفعل أي شيء
+      // إذا كان التمرير عمودي بشكل واضح (deltaY أكبر من deltaX)، اتركه للصفحة
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        // تمرير عمودي - اتركه للصفحة ولا تمنع التمرير
+        return;
+      }
+
+      // التمرير أفقي - منع التمرير الافتراضي وتنقل بين الكروت
+      // فقط عندما يكون التمرير أفقي بشكل واضح
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+        e.preventDefault();
+
+        // منع التنقل السريع (debounce)
+        if (isWheeling) return;
+        
+        isWheeling = true;
+        clearTimeout(wheelTimeout);
+        
+        wheelTimeout = setTimeout(() => {
+          isWheeling = false;
+        }, 100);
+
+        const isRTL = language === 'ar';
+        const shouldGoNext = isRTL ? deltaX < 0 : deltaX > 0;
+        
+        if (shouldGoNext) {
+          // الانتقال للكرت التالي
+          setCurrentIndex((prevIndex) => {
+            if (prevIndex >= campaigns.length - 1) {
+              return 0;
+            }
+            return prevIndex + 1;
+          });
+        } else {
+          // الانتقال للكرت السابق
+          setCurrentIndex((prevIndex) => {
+            if (prevIndex === 0) {
+              return campaigns.length - 1;
+            }
+            return prevIndex - 1;
+          });
+        }
+      }
+    };
+
+    track.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      track.removeEventListener('wheel', handleWheel);
+      clearTimeout(wheelTimeout);
+    };
+  }, [isMobile, canScroll, campaigns.length, language]);
 
   // Swipe/Drag handlers for mouse
   const handleMouseDown = (e) => {
@@ -279,25 +420,25 @@ const Campaigns = () => {
 
         {/* Carousel */}
         <div className="campaigns-carousel">
-          <div className="campaigns-slider">
+          <div className="campaigns-slider" ref={sliderRef}>
             <div 
               ref={trackRef}
               className={`campaigns-track ${!canScroll ? 'campaigns-track-centered' : ''} ${isDragging ? 'campaigns-track-dragging' : ''}`}
               style={{
-                transform: !canScroll 
+                transform: (!canScroll || isMobile)
                   ? 'none'
                   : language === 'ar' 
                     ? `translateX(calc(${currentIndex} * (320px + 1.5rem)))`
                     : `translateX(calc(-${currentIndex} * (320px + 1.5rem)))`,
-                cursor: isDragging ? 'grabbing' : canScroll ? 'grab' : 'default',
+                cursor: isMobile ? 'default' : (isDragging ? 'grabbing' : canScroll ? 'grab' : 'default'),
               }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
+              onMouseDown={!isMobile ? handleMouseDown : undefined}
+              onMouseMove={!isMobile ? handleMouseMove : undefined}
+              onMouseUp={!isMobile ? handleMouseUp : undefined}
+              onMouseLeave={!isMobile ? handleMouseLeave : undefined}
+              onTouchStart={!isMobile ? handleTouchStart : undefined}
+              onTouchMove={!isMobile ? handleTouchMove : undefined}
+              onTouchEnd={!isMobile ? handleTouchEnd : undefined}
             >
               {campaigns.map((campaign) => (
                 <div key={campaign.id} className="campaign-card">

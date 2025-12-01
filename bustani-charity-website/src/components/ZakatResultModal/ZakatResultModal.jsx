@@ -21,7 +21,8 @@ const ZakatResultModal = ({ isOpen, onClose, calculation, assets }) => {
 
     return () => {
       document.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'unset';
+      // إعادة التمرير بعد إغلاق النافذة
+      document.body.style.removeProperty('overflow');
     };
   }, [isOpen, onClose]);
 

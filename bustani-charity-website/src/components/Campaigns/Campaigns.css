@@ -624,13 +624,38 @@
     font-size: 1.2rem;
   }
 
-
+  /* تمرير حر على الموبايل */
   .campaigns-slider {
     width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-left: 1rem;
+    padding-right: 0;
+  }
+
+  [dir='ltr'] .campaigns-slider {
+    padding-left: 0;
+    padding-right: 1rem;
+  }
+
+  [dir='ltr'] .campaigns-slider {
+    padding-right: 1rem;
+    padding-left: 0;
+  }
+
+  .campaigns-slider::-webkit-scrollbar {
+    display: none;
   }
 
   .campaigns-track {
-    width: 100%;
+    width: max-content !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   .campaigns-group {
@@ -644,16 +669,33 @@
   }
 
   .campaign-card {
-    width: calc(100% - 2rem);
-    min-width: calc(100% - 2rem);
-    max-width: calc(100% - 2rem);
-    margin: 0 auto;
+    width: 85%;
+    min-width: 85%;
+    max-width: 85%;
+    margin: 0;
     flex-shrink: 0;
     height: 480px;
     min-height: 480px;
     max-height: 480px;
     display: flex;
     flex-direction: column;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .campaigns-track {
+    gap: 1rem;
+    padding-left: 0;
+    padding-right: 1rem;
+  }
+
+  [dir='ltr'] .campaigns-track {
+    padding-left: 1rem;
+    padding-right: 0;
+  }
+
+  [dir='ltr'] .campaign-card {
+    margin: 0 1rem 0 0.5rem;
   }
 
   .campaign-image {
