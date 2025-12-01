@@ -254,7 +254,12 @@
     "customAmount": "Other Amount",
     "enterAmount": "Enter Amount",
     "selectAmount": "Please select an amount",
-    "proceedPayment": "Proceed with Payment Now {{amount}}"
+    "proceedPayment": "Proceed with Payment Now {{amount}}",
+    "errors": {
+      "enterValidNumber": "Please enter a valid number",
+      "minimumAmount": "Minimum amount is $5",
+      "enterDonationAmount": "Please enter donation amount"
+    }
   }
 }
 

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ChevronDown } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useLanguage } from '../../context/LanguageContext';
@@ -13,12 +14,30 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
   const [customAmount, setCustomAmount] = useState('');
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
+  const [amountError, setAmountError] = useState('');
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    // الانتظار حتى تنتهي animation قبل إغلاق النافذة
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+    }, 300); // نفس مدة animation
+  }, [onClose]);
+
+  // إعادة تعيين حالة الإغلاق عند فتح النافذة
+  useEffect(() => {
+    if (isOpen) {
+      setIsClosing(false);
+    }
+  }, [isOpen]);
 
   // إغلاق النافذة عند الضغط على ESC
   useEffect(() => {
     const handleEsc = (event) => {
-      if (event.keyCode === 27 && isOpen) {
-        onClose();
+      if (event.keyCode === 27 && isOpen && !isClosing) {
+        handleClose();
       }
     };
 
@@ -32,7 +51,7 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
       document.removeEventListener('keydown', handleEsc);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, isClosing, handleClose]);
 
   // إغلاق القائمة المنسدلة عند النقر خارجها
   useEffect(() => {
@@ -51,7 +70,7 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
     };
   }, [showTypeDropdown]);
 
-  if (!isOpen) return null;
+  if (!isOpen && !isClosing) return null;
 
   const donationAmounts = ['25', '10', '5', '100', '50'];
   const frequencies = [
@@ -67,20 +86,53 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
     return selectedAmount;
   };
 
+  const isValidAmount = (amount) => {
+    const numAmount = parseFloat(amount);
+    return !isNaN(numAmount) && numAmount >= 5;
+  };
+
   const handleAmountClick = (amount) => {
     if (amount === 'custom') {
       setShowCustomInput(true);
       setSelectedAmount('');
+      setCustomAmount('');
+      setAmountError('');
     } else {
       setShowCustomInput(false);
       setSelectedAmount(amount);
       setCustomAmount('');
+      setAmountError('');
+    }
+  };
+
+  const handleCustomAmountChange = (e) => {
+    const value = e.target.value;
+    setCustomAmount(value);
+    
+    if (value === '') {
+      setAmountError('');
+    } else {
+      const numValue = parseFloat(value);
+      if (isNaN(numValue)) {
+        setAmountError(t('quickDonation.errors.enterValidNumber'));
+      } else if (numValue < 5) {
+        setAmountError(t('quickDonation.errors.minimumAmount'));
+      } else {
+        setAmountError('');
+      }
     }
   };
 
   const handleProceedPayment = () => {
     const amount = getCurrentAmount();
-    if (!amount || amount === '') return;
+    if (!amount || amount === '' || !isValidAmount(amount)) {
+      if (showCustomInput && (!amount || amount === '')) {
+        setAmountError(t('quickDonation.errors.enterDonationAmount'));
+      } else if (showCustomInput && !isValidAmount(amount)) {
+        setAmountError(t('quickDonation.errors.minimumAmount'));
+      }
+      return;
+    }
     
     // هنا يمكن إضافة منطق الدفع
     console.log('Proceeding with payment:', {
@@ -94,19 +146,21 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
   };
 
   const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+    if (e.target === e.currentTarget && !isClosing) {
+      handleClose();
     }
   };
 
   const currentAmount = getCurrentAmount();
   const displayAmount = currentAmount ? `$${currentAmount}` : '';
+  const isAmountValid = currentAmount && isValidAmount(currentAmount);
 
-  return (
-    <div className="quick-donation-modal-overlay" onClick={handleBackdropClick}>
-      <div className="quick-donation-modal" onClick={(e) => e.stopPropagation()}>
+  // استخدام Portal لنقل النافذة مباشرة إلى body
+  return createPortal(
+    <div className={`quick-donation-modal-overlay ${isClosing ? 'closing' : ''}`} onClick={handleBackdropClick}>
+      <div className={`quick-donation-modal ${isClosing ? 'closing' : ''}`} onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
-        <button className="modal-close-btn" onClick={onClose} aria-label="Close">
+        <button className="modal-close-btn" onClick={handleClose} aria-label="Close">
           <X size={24} />
         </button>
 
@@ -182,15 +236,20 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
             </button>
           </div>
           {showCustomInput && (
-            <input
-              type="number"
-              className="custom-amount-input"
-              placeholder={t('quickDonation.enterAmount')}
-              value={customAmount}
-              onChange={(e) => setCustomAmount(e.target.value)}
-              min="1"
-              step="1"
-            />
+            <>
+              <input
+                type="number"
+                className={`custom-amount-input ${amountError ? 'error' : ''}`}
+                placeholder={t('quickDonation.enterAmount')}
+                value={customAmount}
+                onChange={handleCustomAmountChange}
+                min="5"
+                step="1"
+              />
+              {amountError && (
+                <span className="amount-error-message">{amountError}</span>
+              )}
+            </>
           )}
         </div>
 
@@ -198,12 +257,13 @@ const QuickDonationModal = ({ isOpen, onClose }) => {
         <button
           className="proceed-payment-btn"
           onClick={handleProceedPayment}
-          disabled={!currentAmount || currentAmount === ''}
+          disabled={!currentAmount || currentAmount === '' || !isAmountValid}
         >
-          {displayAmount ? t('quickDonation.proceedPayment', { amount: displayAmount }) : t('quickDonation.selectAmount')}
+          {displayAmount && isAmountValid ? t('quickDonation.proceedPayment', { amount: displayAmount }) : t('quickDonation.selectAmount')}
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

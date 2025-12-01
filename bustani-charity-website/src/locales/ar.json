@@ -254,7 +254,12 @@
     "customAmount": "مبلغ آخر",
     "enterAmount": "أدخل المبلغ",
     "selectAmount": "يرجى اختيار مبلغ",
-    "proceedPayment": "إجراء عملية الدفع الآن {{amount}}"
+    "proceedPayment": "إجراء عملية الدفع الآن {{amount}}",
+    "errors": {
+      "enterValidNumber": "الرجاء إدخال رقم صحيح",
+      "minimumAmount": "الحد الأدنى للمبلغ هو 5 دولار",
+      "enterDonationAmount": "الرجاء إدخال مبلغ التبرع"
+    }
   }
 }
 

@@ -1,9 +1,10 @@
 .projects-section {
   width: 100%;
-  background-color: var(--color-background);
+  background-color: transparent;
   padding: 4rem 0 2rem 0;
   position: relative;
   z-index: 1;
+  overflow: visible;
 }
 
 .projects-container {

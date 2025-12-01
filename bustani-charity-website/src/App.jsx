@@ -26,6 +26,7 @@ import './App.css';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [showNeonLines, setShowNeonLines] = useState(false);
 
   useEffect(() => {
     // Disable scroll restoration to prevent browser from restoring scroll position
@@ -48,6 +49,10 @@ function App() {
         // Re-enable smooth scroll after page is loaded
         document.documentElement.classList.add('loaded');
         document.body.classList.add('loaded');
+        // Show neon lines after page is fully loaded
+        setTimeout(() => {
+          setShowNeonLines(true);
+        }, 500);
       }, 300); // Wait for fade out animation
     }, 1200); // Show spinner for 1.2 seconds
 
@@ -67,6 +72,10 @@ function App() {
           // Re-enable smooth scroll after page is loaded
           document.documentElement.classList.add('loaded');
           document.body.classList.add('loaded');
+          // Show neon lines after page is fully loaded
+          setTimeout(() => {
+            setShowNeonLines(true);
+          }, 500);
         }, 300);
       }, 300);
     };
@@ -103,6 +112,12 @@ function App() {
                   path="/"
                   element={(
                     <div className="App">
+                      {/* Neon Lines Background Effect */}
+                      <div className={`neon-lines-container ${showNeonLines ? 'visible' : ''}`}>
+                        <div className="neon-line neon-line-1"></div>
+                        <div className="neon-line neon-line-2"></div>
+                        <div className="neon-line neon-line-3"></div>
+                      </div>
                       <Navbar />
                       <Hero />
                       <About />

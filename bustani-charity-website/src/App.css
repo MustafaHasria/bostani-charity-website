@@ -30,10 +30,144 @@
 }
 
 /* Enhanced Section Animations */
-.App > *:not(.animated-background) {
+.App > *:not(.animated-background):not(.neon-lines-container) {
   animation: fadeIn 0.6s ease-out, slideInUp 0.8s ease-out;
   position: relative;
   z-index: 1;
+}
+
+/* Ensure sections are above neon lines */
+.about-section,
+.campaigns-section,
+.orphan-sponsorship-section,
+.projects-section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Neon Lines Background Effect */
+.neon-lines-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0;
+  isolation: isolate;
+  transition: opacity 0.5s ease-in;
+}
+
+.neon-lines-container.visible {
+  opacity: 0.3;
+}
+
+[data-theme="dark"] .neon-lines-container.visible {
+  opacity: 0.4;
+}
+
+.neon-line {
+  position: absolute;
+  width: 1.5px;
+  height: 200%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(73, 178, 124, 0.3) 15%,
+    rgba(73, 178, 124, 0.5) 50%,
+    rgba(73, 178, 124, 0.3) 85%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 5px rgba(73, 178, 124, 0.4),
+    0 0 10px rgba(73, 178, 124, 0.3),
+    0 0 15px rgba(73, 178, 124, 0.2);
+  animation: neonLineMove 20s linear infinite;
+  border-radius: 1px;
+  will-change: transform;
+}
+
+[data-theme="dark"] .neon-line {
+  box-shadow: 
+    0 0 8px rgba(73, 178, 124, 0.5),
+    0 0 15px rgba(73, 178, 124, 0.4),
+    0 0 20px rgba(73, 178, 124, 0.3);
+}
+
+.neon-line-1 {
+  left: 20%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+  animation-name: neonLineMoveFromRight;
+}
+
+.neon-line-2 {
+  left: 50%;
+  animation-delay: -8s;
+  animation-duration: 30s;
+  animation-name: neonLineMoveFromLeft;
+}
+
+.neon-line-3 {
+  left: 80%;
+  animation-delay: -15s;
+  animation-duration: 28s;
+  animation-name: neonLineMoveFromRight;
+}
+
+@keyframes neonLineMoveFromRight {
+  0% {
+    transform: translateY(-100%) translateX(100vw) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes neonLineMoveFromLeft {
+  0% {
+    transform: translateY(-100%) translateX(-100vw) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Reduce opacity on mobile for better performance */
+@media (max-width: 768px) {
+  .neon-lines-container.visible {
+    opacity: 0.25;
+  }
+  
+  [data-theme="dark"] .neon-lines-container.visible {
+    opacity: 0.35;
+  }
+  
+  .neon-line {
+    width: 1px;
+  }
+  
+  .neon-line-3 {
+    display: none;
+  }
 }
 
 .hero-section {
