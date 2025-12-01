@@ -20,6 +20,7 @@ import ZakatCalculatorPage from './pages/ZakatCalculatorPage';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import './App.css';
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
           <HomeDataProvider>
             {isLoading && <LoadingSpinner fadeOut={isFadingOut} />}
             <Router>
+              <ScrollToTop />
               <Routes>
                 {/* Login Route */}
                 <Route

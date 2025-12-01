@@ -40,6 +40,18 @@
   z-index: 0 !important;
 }
 
+.campaigns-page {
+  z-index: 0 !important;
+}
+
+.zakat-page {
+  z-index: 0 !important;
+}
+
+.zakat-calculator-page {
+  z-index: 0 !important;
+}
+
 /* Improved Fade In */
 @keyframes fadeIn {
   from {
